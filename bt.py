@@ -38,9 +38,9 @@ try:
     with codecs.open(sys.argv[1], mode='r', encoding='ascii', errors='ignore') as f:
         ooo = f.read().splitlines()
 except IndexError:
-    print (ktnred + '[+]================> ' + 'USAGE: ' + sys.argv[0] + ' listsite.txt' + CEND)
+    print (fr + '[+]================> ' + 'USAGE: ' + sys.argv[0] + ' listsite.txt' + fg)
     pass
-ooo = list((ooo))
+
 
 
 ##########################################################################################
