@@ -17,7 +17,7 @@ def MrClay_TeamleetsDomain(url):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Mobile Safari/537.36'
         }
-        x = requests.get('https://api.reverseipdomain.com/?ip='+url, headers=headers, timeout=30).content
+        x = requests.get('https://api.reverseipdomain.com/?ip='+url, headers=headers, timeout=15).content
         if 'Domain Name' in x:
             regex = re.findall('<a href="/domain/(.*?)">', x)
             for domain_name in regex:
@@ -35,7 +35,7 @@ def ClayTeamleets_dns(url):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Mobile Safari/537.36'
         }
-        x = requests.get('https://rapiddns.io/s/'+url+'?full=1&down=1#result/', headers=headers, timeout=30).content
+        x = requests.get('https://rapiddns.io/s/'+url+'?full=1&down=1#result/', headers=headers, timeout=15).content
         if '<th scope="row ">' in x:
             regex = re.findall('<td>(?!\-)(?:[a-zA-Z\d\-]{0,62}[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z]{1,63}</td>', x)
             for domain_name in regex:
