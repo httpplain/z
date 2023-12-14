@@ -1,68 +1,43 @@
-import requests
-import re
-import os
+# Import Module
+import requests, re
 
-# coded by #No_Identity 
-# Copyright xReverseLabs - Linuxploit.com
-# https://t.me/xxyz4
-# join channel : https://t.me/exploi7
+# Colors 
+p = '\x1b[0m'
+m = '\x1b[91m'
+h = '\x1b[92m'
+k = '\x1b[93m'
+b = '\x1b[94m'
+u = '\x1b[95m'
+bm = '\x1b[96m'
+bgm = '\x1b[41m'
+bgp = '\x1b[47m'
+res = '\x1b[40m'
 
-def grab_domains_by_date(date, page):
-    url = f"https://api.xreverselabs.my.id/apibydate_public?date={date}&page={page}"
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-
-    headers = {'User-Agent': user_agent}
-    response = requests.get(url, headers=headers)
-
-    if response.status_code != 200:
-        print(f"Failed to retrieve data from {url}. Status code: {response.status_code}")
-        return []
-
-    rex = re.findall(r'<br>(.*?)<br>', response.text)
-    return rex
-
-def main():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    banner = """
-    
-░██████╗░██████╗░░█████╗░██████╗░██████╗░░█████╗░████████╗███████╗
-██╔════╝░██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
-██║░░██╗░██████╔╝███████║██████╦╝██║░░██║███████║░░░██║░░░█████╗░░
-██║░░╚██╗██╔══██╗██╔══██║██╔══██╗██║░░██║██╔══██║░░░██║░░░██╔══╝░░
-╚██████╔╝██║░░██║██║░░██║██████╦╝██████╔╝██║░░██║░░░██║░░░███████╗
-░╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═════╝░╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░╚══════╝
-
-Coded by #No_Identity - https://t.me/xxyz4
-Join : https://t.me/exploi7
-    """
-    print(banner)
-    date = input("Date (format: YYYY-MM-DD) > ")
-    page = 1
-
-    all_domains = set()
-    while True:
-        print(f"Processing page {page}...")
-        domains = grab_domains_by_date(date, page)
-        print("Domains:", domains)
-        if not domains:
-            break
-
-        new_domains = set(domains) - all_domains
-        print("New Domains:", new_domains)
-        if not new_domains:
-            print("No new domains found. Stopping.")
-            break
-
-        all_domains.update(new_domains)
-        page += 1
-
-    if all_domains:
-        print(f"Results for {date}:")
-        for domain in all_domains:
-            print(f"-| {domain}")
-            open(f"Domain-{date}.txt", 'a').write('http://' + domain + '\n')
-    else:
-        print("No results found.")
+def oke(page,site,outs):
+	ok = requests.get(f'https://site-stats.org/domains/.{site}/{page}/').text
+	a = re.findall('<tr><td><a href="/(.*?)/"', ok)
+	print(f"[#]===============[PAGE : {page}]===============[#]")
+	for i in a:
+		with open(outs, "a") as okss:
+			okss.write('http://'+str(i)+'\n')
+		print(f'\n{p}{bgm}[--] {p}{h}Domain {p}{k}: {p}{h}http://{str(i)}')
+		
+def banner():
+	print("""{}
+[#]==============================[#]
+[ ! ] Grab Site By Extension
+[ ! ] Priv8 Api
+[ ! ] Coded By : viper1337
+[ ! ] Remaked By : viper1337
+[ ! ] Version : v3.0
+[ ! ] Code in : Python3
+[#]==============================[#]	
+	{}""".format(k,p))
 
 if __name__ == "__main__":
-    main()
+	banner()
+	ext = input("\n{}[ ? ] Enter Extension : {}".format(bgm,p))
+	oks = int(input('{}[ ? ] Total Page : {}'.format(bgm,p)))
+	out = input("{}[ ? ] Output File [Ex - result.txt] : {}".format(bgm,p))
+
+for i in range(0,oks): oke(i,ext,out)
