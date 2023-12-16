@@ -41,7 +41,7 @@ def ClayTeamleets_dns(url):
             for domain_name in regex:
                 website_url = 'http://' + domain_name.replace('<td>', '').replace('</td>', '').replace('ftp.', '').replace('images.', '').replace('cpanel.', '').replace('cpcalendars.', '').replace('cpcontacts.', '').replace('webmail.', '').replace('webdisk.', '').replace('hostmaster.', '').replace('mail.', '').replace('ns1.', '').replace('ns2.', '').replace('autodiscover.', '')
                 print("IP GOOD DOMAIN GRABBED".format(website_url))
-                open('ip.txt', 'a').write(website_url + '\n')
+                open('list.txt', 'a').write(website_url + '\n')
         else:
             print("BAD IP" + url)
     except:
