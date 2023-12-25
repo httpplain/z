@@ -151,7 +151,7 @@ def ovatoolsb():
         return True
     
     
-    mp = Pool(50)
+    mp = Pool(25)
     mp.map(main, target)
     mp.close()
     mp.join()
