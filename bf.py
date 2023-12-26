@@ -281,7 +281,7 @@ def main(url):
     except:
         pass
 
-mp = Pool(150)
+mp = Pool(60)
 mp.map(main, target)
 mp.close()
 mp.join()
