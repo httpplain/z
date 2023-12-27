@@ -5,7 +5,7 @@ try :
 except :
     list = ['aiohttp','asyncio']
     for ll in list :
-        os.system(f'clear{ll}')
+        os.system(f'start cmd /c py -m pip install {ll}')
 
 import sys
 import string
@@ -50,7 +50,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Mobile Safari/537.36'
 }
 
-semaphore = asyncio.Semaphore(500)
+semaphore = asyncio.Semaphore(200)
 
 async def style(i):  # can upload shell
     global vulns
@@ -118,7 +118,7 @@ except IndexError:
 
 async def main():
     tasks = []
-    sem = asyncio.Semaphore(value=750)
+    sem = asyncio.Semaphore(value=150)
     async with sem:
         for t in target:
             tasks.append(asyncio.create_task(style(t)))
