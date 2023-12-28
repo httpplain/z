@@ -50,7 +50,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Mobile Safari/537.36'
 }
 
-semaphore = asyncio.Semaphore(200)
+semaphore = asyncio.Semaphore(150)
 
 async def style(i):  # can upload shell
     global vulns
@@ -118,7 +118,7 @@ except IndexError:
 
 async def main():
     tasks = []
-    sem = asyncio.Semaphore(value=200)
+    sem = asyncio.Semaphore(value=110)
     async with sem:
         for t in target:
             tasks.append(asyncio.create_task(style(t)))
