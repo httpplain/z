@@ -116,7 +116,7 @@ def exploit(url):
         print ' -| ' + url + ('--> {}[Failed]').format(fr)
 
 
-mp = Pool(20)
+mp = Pool(60)
 mp.map(exploit, target)
 mp.close()
 mp.join()
