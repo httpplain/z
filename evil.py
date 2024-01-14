@@ -521,7 +521,7 @@ def RunMyCode(site):
 	except:
 		pass
 #RunMyCode("https://retwisdom.wpengine.com/")
-mp = Pool(200)
+mp = Pool(1000)
 mp.map(RunMyCode, target)
 mp.close()
 mp.join()
